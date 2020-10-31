@@ -78,6 +78,7 @@ class DenseBlock(block_module.Block):
         super().__init__(**kwargs)
         self.num_layers = num_layers
         self.num_units = utils.get_hyperparameter(
+            num_units,
             hyperparameters.Choice([16, 32, 64, 128, 256, 512, 1024], default=32),
             int,
         )
@@ -89,12 +90,17 @@ class DenseBlock(block_module.Block):
         config.update(
             {
                 "num_layers": self.num_layers,
-                "num_units": self.num_units,
+                "num_units": hyperparameters.serialize(self.num_units),
                 "use_batchnorm": self.use_batchnorm,
                 "dropout": self.dropout,
             }
         )
         return config
+
+    @classmethod
+    def from_config(cls, config):
+        config["num_units"] = hyperparameters.deserialize(config["num_units"])
+        return cls(**config)
 
     def build(self, hp, inputs=None):
         inputs = nest.flatten(inputs)
@@ -234,7 +240,7 @@ class ConvBlock(block_module.Block):
     ):
         super().__init__(**kwargs)
         self.kernel_size = utils.get_hyperparameter(
-            hyperparameters.Choice([3, 5, 7], default=3), int
+            kernel_size, hyperparameters.Choice([3, 5, 7], default=3), int
         )
         self.num_blocks = num_blocks
         self.num_layers = num_layers
@@ -246,7 +252,7 @@ class ConvBlock(block_module.Block):
         config = super().get_config()
         config.update(
             {
-                "kernel_size": self.kernel_size,
+                "kernel_size": hyperparameters.serialize(self.kernel_size),
                 "num_blocks": self.num_blocks,
                 "num_layers": self.num_layers,
                 "max_pooling": self.max_pooling,
@@ -255,6 +261,11 @@ class ConvBlock(block_module.Block):
             }
         )
         return config
+
+    @classmethod
+    def from_config(cls, config):
+        config["kernel_size"] = hyperparameters.deserialize(config["kernel_size"])
+        return cls(**config)
 
     def build(self, hp, inputs=None):
         inputs = nest.flatten(inputs)

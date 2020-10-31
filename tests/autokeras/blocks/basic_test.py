@@ -17,6 +17,7 @@ import pytest
 import tensorflow as tf
 from tensorflow.python.util import nest
 
+import autokeras as ak
 from autokeras import blocks
 from tests import utils
 
@@ -280,7 +281,7 @@ def test_rnn_get_config_has_all_attributes():
 
 
 def test_dense_build_return_tensor():
-    block = blocks.DenseBlock()
+    block = blocks.DenseBlock(num_units=ak.Choice([10, 20]))
 
     outputs = block.build(
         kerastuner.HyperParameters(), tf.keras.Input(shape=(32,), dtype=tf.float32)

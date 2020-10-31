@@ -16,6 +16,7 @@ import numpy as np
 import pytest
 import tensorflow as tf
 
+from autokeras import hyperparameters
 from autokeras.utils import utils
 
 
@@ -59,3 +60,20 @@ def test_run_with_adaptive_batch_size_raise_error():
                 np.random.rand(100, 1)
             ).batch(64),
         )
+
+
+def test_get_hyperparameter_with_none_return_hp():
+    hp = utils.get_hyperparameter(None, hyperparameters.Choice([10, 20]), int)
+    assert isinstance(hp, hyperparameters.Choice)
+
+
+def test_get_hyperparameter_with_int_return_fixed():
+    hp = utils.get_hyperparameter(10, hyperparameters.Choice([10, 20]), int)
+    assert isinstance(hp, hyperparameters.Fixed)
+
+
+def test_get_hyperparameter_with_hp_return_same():
+    hp = utils.get_hyperparameter(
+        hyperparameters.Choice([10, 30]), hyperparameters.Choice([10, 20]), int
+    )
+    assert isinstance(hp, hyperparameters.Choice)

@@ -25,6 +25,9 @@ HELP_MESSAGE = (
 # TODO: add types and remove all elements from
 # the exception list.
 EXCEPTION_LIST = [
+    autokeras.Boolean,
+    autokeras.Fixed,
+    autokeras.Choice,
     autokeras.MultiCategoryEncoding,
     autokeras.BertTokenizer,
     autokeras.BertEncoder,

@@ -39,8 +39,9 @@ from autokeras.blocks import XceptionBlock
 from autokeras.engine.block import Block
 from autokeras.engine.head import Head
 from autokeras.engine.node import Node
+from autokeras.hyperparameters import Boolean
 from autokeras.hyperparameters import Choice
-from autokeras.hyperparameters import Int
+from autokeras.hyperparameters import Fixed
 from autokeras.keras_layers import BertEncoder
 from autokeras.keras_layers import BertTokenizer
 from autokeras.keras_layers import MultiCategoryEncoding

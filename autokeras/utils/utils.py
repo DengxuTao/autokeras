@@ -113,9 +113,9 @@ def run_with_adaptive_batch_size(batch_size, func, **fit_kwargs):
     return history
 
 
-def get_hyperparameter(hp, dtype):
-    if hp is None:
+def get_hyperparameter(value, hp, dtype):
+    if value is None:
         return hp
-    elif isinstance(hp, dtype):
-        return hyperparameters.Fixed(hp)
-    return hp
+    elif isinstance(value, dtype):
+        return hyperparameters.Fixed(value)
+    return value

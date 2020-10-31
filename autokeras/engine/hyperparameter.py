@@ -16,10 +16,29 @@ import kerastuner
 
 
 class HyperParameter(kerastuner.engine.hyperparameters.HyperParameter):
-    def __init__(self, **kwargs):
-        super().__init__(name="unknown", **kwargs)
+    """Hyperparameter base class in AutoKeras.
+
+    Specify the hyperparameter search space in the arguments of the
+    initializer of the blocks. It override the Keras Tuner HyperParameter
+    class to allow user not specifying the name of the HyperParameter.
+    """
+
+    def __init__(self, name="unknown", **kwargs):
+        super().__init__(name=name, **kwargs)
+
+    def get_config(self):
+        config = super().get_config()
+        config.pop("conditions")
+        config.pop("name")
+        return config
 
     def add_to_hp(self, hp, name):
+        """Add the HyperParameter (self) to the HyperParameters.
+
+        # Arguments
+            hp: kerastuner.HyperParameters.
+            name: String. The name of the HyperParameter.
+        """
         kwargs = self.get_config()
         kwargs["name"] = name
         class_name = self.__class__.__name__
